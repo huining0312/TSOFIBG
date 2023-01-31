@@ -8,7 +8,6 @@
 #' @param trainSize training set size that users desire
 #' @param p_true we assume phenotype data collected from field is unknown; therefore we generate phenotype value by using MCMC.
 #' @param g_true true genotypic values are inestimable; therefore we generate by using MCMC.
-#' @export
 #' @noRd
 #'
 paral_trainSetSize <- function(kinship,optimal_trainSet,subpop,trainSize,p_true,g_true){
@@ -25,7 +24,7 @@ paral_trainSetSize <- function(kinship,optimal_trainSet,subpop,trainSize,p_true,
     for(sp in gpName){
       subgpNum = c(subgpNum, length(sp))
     }
-    ratio_pp = subgpNum/n
+    ratio_pp = subgpNum/sum(subgpNum)
     PPpickNum = floor(ratio_pp*trainSize[1])
     PickNumpp = sampleSizefun(pickNum = PPpickNum,train_size = trainSize[1],subgpNum = subgpNum)
 
@@ -76,7 +75,6 @@ paral_trainSetSize <- function(kinship,optimal_trainSet,subpop,trainSize,p_true,
 #' @param sg variance of genotypic values; default is 25
 #' @param n the total number of candidates
 #' @param desireDelta The proportion of the candidate dataset that users would like to use as the training set.
-#' @export
 #' @noRd
 #'
 evalsteps <- function(optimal_trainSet,kinship,nsim=2000,subpop,desireH,mu=100,sg=25,n,desireDelta){

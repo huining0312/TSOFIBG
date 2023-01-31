@@ -6,8 +6,10 @@
 \title{A data frame with subpopulations information of rice 44K.}
 \format{
 A data frame with 413 rows and 2 variables:
+\describe{
 \item{NSFTV.ID}{ID of the genotypes}
 \item{Sub.population}{Subpopulation of genotypes}
+}
 }
 \source{
 \url{https://doi.org/10.1038/ncomms1467}

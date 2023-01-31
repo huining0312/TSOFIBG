@@ -5,7 +5,6 @@
 #' @param g_bp genotypic value predicted by GBLUP model
 #' @param g_true true genotypic value (unsorted)
 #' @param k the ranking of the genotypes; default is 1, 5, 10 and the mean of top 10
-#' @export
 #' @noRd
 #'
 DCG_k_pre <- function(g_bp,g_true,k){
@@ -25,7 +24,6 @@ DCG_k_pre <- function(g_bp,g_true,k){
 #'
 #' @param true_gen true genotypic value sorted in the decreasing order
 #' @param k the ranking of the genotypes; default is 1, 5, 10 and the mean of top 10
-#' @export
 #' @noRd
 #'
 DCG_k_true <- function(true_gen,k){
@@ -43,7 +41,6 @@ DCG_k_true <- function(true_gen,k){
 #' @param g_true true genotypic value(unsorted)
 #' @param k the ranking of the genotypes; default is 1, 5, 10 and the mean of top 10
 #' @param true_gen true genotypic value sorted in the decreasing order
-#' @export
 #' @noRd
 #'
 mean_NDCGk <- function(g_bp,g_true,k,true_gen){

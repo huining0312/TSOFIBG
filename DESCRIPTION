@@ -1,5 +1,5 @@
 Package: AugEITD
-Title: Training set determination for genomic selectio by using bayesian optimization
+Title: Training set determination for genomic selection by using bayesian optimization
 Version: 0.0.0.9000
 Authors@R: c(
     person("Hui-Ning", "Tu",email="huining0312@gmail.com", role = c("aut", "cre")),

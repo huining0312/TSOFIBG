@@ -5,7 +5,6 @@
 #' @param pickNum the number of genotypes provided by each subpopulation group; number vector
 #' @param train_size training set size
 #' @param subgpNum the number of genotypes of each subpopulation group
-#' @export
 #' @noRd
 #'
 sampleSizefun = function(pickNum,train_size,subgpNum){

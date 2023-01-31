@@ -4,12 +4,17 @@
 \name{AugEITD-package}
 \alias{AugEITD}
 \alias{AugEITD-package}
-\title{AugEITD: What the Package Does (One Line, Title Case)}
+\title{AugEITD: Training set determination for genomic selection by using bayesian optimization}
 \description{
-What the package does (one paragraph).
+Determine the training set based on user's genotype data of plants. Functions return the selection index of each genotype and the efficiency of the training set under different sizes.
 }
 \author{
-\strong{Maintainer}: Hui-Ning Tu \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Hui-Ning Tu \email{huining0312@gmail.com}
+
+Authors:
+\itemize{
+  \item Chen-Tuo Liao \email{ctliao@ntu.edu.tw} (\href{https://orcid.org/0000-0001-9777-3701}{ORCID}) [thesis advisor]
+}
 
 }
 \keyword{internal}
