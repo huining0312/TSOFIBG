@@ -89,7 +89,7 @@ CV_process = function(kinship,nsim,CV_gpnumber,h,n,sg,mu){
   }
 
   final_dat = data.frame(augEI=apply(result, 1, mean))
-  final_dat = final_dat/nsim
+  #final_dat = final_dat/nsim
   rank = order(final_dat[,1], decreasing = T)
   sort_result = data.frame(speciesName=rownames(final_dat)[rank],aug.EI=final_dat[rank,],posIndex=rep(0,n))
   for(i in 1:nrow(sort_result)){
@@ -116,24 +116,21 @@ CV_process = function(kinship,nsim,CV_gpnumber,h,n,sg,mu){
 #' @param desireH The heratibility parameters for user's desiring traits. This would be used in the simulation step.
 #' @param desireDelta The proportion of the candidate dataset that users would like to use as the training set.
 #' @export
+#'
 gen_sel_Index = function(kinship,nsim=1000,CV_gpnumber=5,h=0.5,n,sg=25,mu=100,subpopTag,desireH = c(0.5),desireDelta=c(1/5,1/3,2/3)){
-  if (!requireNamespace("doParallel", quietly = TRUE)) {
-    stop(
-      "Package \"doParallel\" must be installed to use this function.",
-      call. = FALSE
-    )
-  }
   doParallel::registerDoParallel(cores = parallel::detectCores() - 1)
+
   sort_result = CV_process(kinship,nsim,CV_gpnumber,h,n,sg,mu)
+
   if(missing(subpopTag)){
     simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nsim,subpop = F,desireH=desireH,mu=mu,sg=sg,desireDelta=desireDelta,n=n)
   }else{
+    cat(paste("evaluate step processing..."),sep = "\n")
     sort_result$tag = rep(NA,n)
     for(i in 1:n){
-      sort_result[i,4] <- as.character(subpopTag[which(subpopTag == sort_result$speciesName[i]),2])
+      sort_result[i,4] <- as.character(subpopTag[subpopTag[,1] == sort_result[i,1],2])
     }
-    simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nsim,subpop = T,desireH=desireH,mu=mu,sg=sg,desireDelta = desireDelta,n=n)
-
+    simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nsim,subpop = T,desireH=desireH,mu=mu,sg=sg,n=n,desireDelta = desireDelta)
   }
   return(list(selIndex=sort_result,simuNDCG=simuRes[[1]],simuRENDCG=simuRes[[2]]))
   doParallel::stopImplicitCluster()

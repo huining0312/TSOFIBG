@@ -7,6 +7,7 @@
 #' @import BGLR
 #' @import doParallel
 #' @import MASS
+#' @importFrom dplyr %>%
 #' @importFrom dplyr filter
 #' @importFrom foreach %:%
 #' @importFrom foreach %dopar%

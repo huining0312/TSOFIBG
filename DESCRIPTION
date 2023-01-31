@@ -13,7 +13,7 @@ RoxygenNote: 7.2.3
 Imports: 
     BGLR (>= 1.1.0),
     doParallel (>= 1.0.17),
-    dplyr,
+    dplyr (>= 1.0.10),
     foreach (>= 1.5.2),
     magrittr (>= 2.0.3),
     MASS (>= 7.3-58.1),

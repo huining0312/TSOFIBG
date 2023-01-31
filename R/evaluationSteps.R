@@ -17,16 +17,16 @@ paral_trainSetSize <- function(kinship,optimal_trainSet,subpop,trainSize,p_true,
     gpName = names(table(optimal_trainSet[,4]))
     for(i in gpName){
       nam <- paste(i)
-      assign(nam, optimal_trainSet%>%filter(tag==i)%>%.$posIndex)
+      assign(nam, optimal_trainSet%>%filter(optimal_trainSet[,4]==i)%>%.$posIndex)
     }
 
     subgpNum = c()
     for(sp in gpName){
-      subgpNum = c(subgpNum, length(sp))
+      subgpNum = c(subgpNum, length(get(sp)))
     }
     ratio_pp = subgpNum/sum(subgpNum)
-    PPpickNum = floor(ratio_pp*trainSize[1])
-    PickNumpp = sampleSizefun(pickNum = PPpickNum,train_size = trainSize[1],subgpNum = subgpNum)
+    PPpickNum = floor(ratio_pp*trainSize)
+    PickNumpp = sampleSizefun(pickNum = PPpickNum,train_size = trainSize,subgpNum = subgpNum)
 
     pick_pp = c()
     for(gpnum in 1:length(gpName)){
@@ -90,10 +90,11 @@ evalsteps <- function(optimal_trainSet,kinship,nsim=2000,subpop,desireH,mu=100,s
     h = desireH[i]
     se=sg*(1-h)/h
     pT = mu+gT+mvrnorm(nsim,rep(0,n),se*diag(1,nrow = n,ncol = n))
-    temp = foreach(sim=1:nsim, .combine = "+")%:%
-      foreach(tr=1:length(trainSize), .combine=rbind)%dopar% {
-        paral_trainSetSize(kinship,optimal_trainSet,subpop,trainSize[tr],p_true = pT[sim,],g_true=gT[sim,])
-      }
+    temp <-
+      foreach(s=1:nsim, .combine = "+") %:%
+        foreach(t=1:length(trainSize), .combine="rbind") %dopar% {
+          paral_trainSetSize(kinship,optimal_trainSet,subpop,trainSize[t],p_true = pT[s,],g_true=gT[s,])
+        }
     EIResult[[i]] = round((temp/nsim),4)
     RE_EIResult[[i]] = apply(EIResult[[i]],2,function(x) x/x[length(trainSize)])
     colnames(EIResult[[i]]) = c("k1","k5","k10","meank10")
