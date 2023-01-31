@@ -1,12 +1,12 @@
 Package: AugEITD
-Title: What the Package Does (One Line, Title Case)
+Title: Training set determination for genomic selectio by using bayesian optimization
 Version: 0.0.0.9000
-Authors@R: 
-    person("Hui-Ning", "Tu", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+Authors@R: c(
+    person("Hui-Ning", "Tu",email="huining0312@gmail.com", role = c("aut", "cre")),
+    person("Chen-Tuo", "Liao",email="ctliao@ntu.edu.tw", role = c("aut", "ths"), 
+            comment = c(ORCID = "0000-0001-9777-3701")))
+Description: Determine the training set based on user's genotype data of plants. Functions return the selection index of each genotype and the efficiency of the training set under different sizes.
+License: GPL (>= 3)
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
