@@ -7,12 +7,23 @@
 <!-- badges: end -->
 
 This package provides users a function to determine a training set for
-genomic selection which aim at training the GBLUP model to find the best
-genotype from large candidate set. Users will obtain the selection index
-of genotypes which indicates to the priority order of genotypes being
-selected as a training set. The ranking is based on the augmented EI
-value of each genotype. For more details of augmented EI, please check
-the [article](https://doi.org/10.1007/s13253-021-00454-2)
+genomic selection. The aim for this training set is to train the GBLUP
+model finding the best genotype from large candidate set. Augmented EI
+presented by [Tsai et
+al.(2021)](https://doi.org/10.1007/s13253-021-00454-2) is used as the
+criteria and NDCG (Normalized dicounted cumulated gain, Blondel et
+al.(2015)) is used as the index of evaluating model prediction accuracy
+in this package.
+
+For more details of methods in this package, please check the
+\[article\].
+
+Users will obtain : 1. the selection index of genotypes which indicates
+to the priority order of genotypes being selected as a training set. The
+ranking is based on the augmented EI value of each genotype. 2. the
+evaluation result of the optimal training set 3. the relative efficiency
+of the optimal training set at different sizes to the whole dataset
+based on collected phenotype data
 
 ## Installation
 
@@ -21,7 +32,7 @@ The development version of AugEITD could be download from
 
 ``` r
 # install.packages("devtools")
-#library(devtools)
+# library(devtools)
 install_github("huining0312/AUGEITD",dependencies=TRUE,force=TRUE)
 ```
 
