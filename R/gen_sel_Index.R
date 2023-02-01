@@ -89,7 +89,6 @@ CV_process = function(kinship,nsim,CV_gpnumber,h,n,sg,mu){
   }
 
   final_dat = data.frame(augEI=apply(result, 1, mean))
-  #final_dat = final_dat/nsim
   rank = order(final_dat[,1], decreasing = T)
   sort_result = data.frame(speciesName=rownames(final_dat)[rank],aug.EI=final_dat[rank,],posIndex=rep(0,n))
   for(i in 1:nrow(sort_result)){
@@ -132,6 +131,6 @@ gen_sel_Index = function(kinship,nsim=1000,CV_gpnumber=5,h=0.5,n,sg=25,mu=100,su
     }
     simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nsim,subpop = T,desireH=desireH,mu=mu,sg=sg,n=n,desireDelta = desireDelta)
   }
-  return(list(selIndex=sort_result,simuNDCG=simuRes[[1]],simuRENDCG=simuRes[[2]]))
+  return(list(selIndex=sort_result,simuNDCG=simuRes[[1]]))
   doParallel::stopImplicitCluster()
 }

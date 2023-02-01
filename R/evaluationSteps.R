@@ -64,7 +64,7 @@ paral_trainSetSize <- function(kinship,optimal_trainSet,subpop,trainSize,p_true,
 
 #' evalsteps
 #'
-#' Main function deal with GBLUP model in evaluation steps.(consider different heritability settings)
+#' Main function deal with GBLUP model in evaluation steps.(consider different heratibility settings)
 #'
 #' @param optimal_trainSet  dataframe; generated from previous steps; provide information of genotypes' selection Index
 #' @param kinship kinship matrix
@@ -96,10 +96,8 @@ evalsteps <- function(optimal_trainSet,kinship,nsim=2000,subpop,desireH,mu=100,s
           paral_trainSetSize(kinship,optimal_trainSet,subpop,trainSize[t],p_true = pT[s,],g_true=gT[s,])
         }
     EIResult[[i]] = round((temp/nsim),4)
-    RE_EIResult[[i]] = apply(EIResult[[i]],2,function(x) x/x[length(trainSize)])
     colnames(EIResult[[i]]) = c("k1","k5","k10","meank10")
-    colnames(RE_EIResult[[i]]) = c("RE_k1","RE_k5","RE_k10","RE_meank10")
-    rownames(EIResult[[i]]) = rownames(RE_EIResult[[i]]) = paste("N",trainSize,sep = "")
+    rownames(EIResult[[i]]) = paste("N",trainSize,sep = "")
   }
-  return(list("EIResult"=EIResult,"RE_EIResult"=RE_EIResult))
+  return(list("EIResult"=EIResult))
 }
