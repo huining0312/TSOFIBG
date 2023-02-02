@@ -105,7 +105,8 @@ CV_process = function(kinship,nsim,CV_gpnumber,h,n,sg,mu){
 #' The index of the suggested training set will also be returned.
 #'
 #' @param kinship kinship matrix
-#' @param nsim  Number of repetitions
+#' @param nOpsim  Number of repetitions for cross-validation
+#' @param nEvalsim Number of repetitions for evaluate the performance of optimal training set
 #' @param CV_gpnumber number of folds for cross validation
 #' @param h heritability parameters for obtaining the optimal training set; default is 0.5
 #' @param n the total number of candidates
@@ -116,20 +117,20 @@ CV_process = function(kinship,nsim,CV_gpnumber,h,n,sg,mu){
 #' @param desireDelta The proportion of the candidate dataset that users would like to use as the training set.
 #' @export
 #'
-gen_sel_Index = function(kinship,nsim=1000,CV_gpnumber=5,h=0.5,n,sg=25,mu=100,subpopTag,desireH = c(0.5),desireDelta=c(1/5,1/3,2/3)){
+gen_sel_Index = function(kinship,nOpsim=1000,nEvalsim=2000,CV_gpnumber=5,h=0.5,n,sg=25,mu=100,subpopTag,desireH = c(0.5),desireDelta=c(1/5,1/3,2/3)){
   doParallel::registerDoParallel(cores = parallel::detectCores() - 1)
 
-  sort_result = CV_process(kinship,nsim,CV_gpnumber,h,n,sg,mu)
+  sort_result = CV_process(kinship,nOpsim,CV_gpnumber,h,n,sg,mu)
 
   if(missing(subpopTag)){
-    simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nsim,subpop = F,desireH=desireH,mu=mu,sg=sg,desireDelta=desireDelta,n=n)
+    simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nEvalsim,subpop = F,desireH=desireH,mu=mu,sg=sg,desireDelta=desireDelta,n=n)
   }else{
     cat(paste("evaluate step processing..."),sep = "\n")
     sort_result$tag = rep(NA,n)
     for(i in 1:n){
       sort_result[i,4] <- as.character(subpopTag[subpopTag[,1] == sort_result[i,1],2])
     }
-    simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nsim,subpop = T,desireH=desireH,mu=mu,sg=sg,n=n,desireDelta = desireDelta)
+    simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nEvalsim,subpop = T,desireH=desireH,mu=mu,sg=sg,n=n,desireDelta = desireDelta)
   }
   return(list(selIndex=sort_result,simuNDCG=simuRes[[1]]))
   doParallel::stopImplicitCluster()

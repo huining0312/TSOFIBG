@@ -78,6 +78,7 @@ paral_trainSetSize <- function(kinship,optimal_trainSet,subpop,trainSize,p_true,
 #' @noRd
 #'
 evalsteps <- function(optimal_trainSet,kinship,nsim=2000,subpop,desireH,mu=100,sg=25,n,desireDelta){
+  desireDelta = c(desireDelta,1)
   trainSize = round(desireDelta*n)
   innerList1 = matrix(0,length(trainSize),4)
   innerList2 = matrix(0,length(trainSize),4)
@@ -96,8 +97,10 @@ evalsteps <- function(optimal_trainSet,kinship,nsim=2000,subpop,desireH,mu=100,s
           paral_trainSetSize(kinship,optimal_trainSet,subpop,trainSize[t],p_true = pT[s,],g_true=gT[s,])
         }
     EIResult[[i]] = round((temp/nsim),4)
+    RE_EIResult[[i]] = apply(EIResult[[i]],2,function(x) x/x[length(trainSize)])
     colnames(EIResult[[i]]) = c("k1","k5","k10","meank10")
-    rownames(EIResult[[i]]) = paste("N",trainSize,sep = "")
+    colnames(RE_EIResult[[i]]) = c("RE_k1","RE_k5","RE_k10","RE_meank10")
+    rownames(EIResult[[i]]) = rownames(RE_EIResult[[i]]) = paste("N",trainSize,sep = "")
   }
-  return(list("EIResult"=EIResult))
+  return(list("EIResult"=EIResult,"RE_EIResult"=RE_EIResult))
 }

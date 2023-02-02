@@ -1,6 +1,6 @@
 #' sampleSizefun
 #'
-#' Function that deal with determine training set
+#' Function that deal with determine training set when considering population structure in generating optimal training set.
 #'
 #' @param pickNum the number of genotypes provided by each subpopulation group; number vector
 #' @param train_size training set size

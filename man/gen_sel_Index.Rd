@@ -6,7 +6,8 @@
 \usage{
 gen_sel_Index(
   kinship,
-  nsim = 1000,
+  nOpsim = 1000,
+  nEvalsim = 2000,
   CV_gpnumber = 5,
   h = 0.5,
   n,
@@ -20,7 +21,9 @@ gen_sel_Index(
 \arguments{
 \item{kinship}{kinship matrix}
 
-\item{nsim}{Number of repetitions}
+\item{nOpsim}{Number of repetitions for cross-validation}
+
+\item{nEvalsim}{Number of repetitions for evaluate the performance of optimal training set}
 
 \item{CV_gpnumber}{number of folds for cross validation}
 
