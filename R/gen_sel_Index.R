@@ -132,6 +132,6 @@ gen_sel_Index = function(kinship,nOpsim=1000,nEvalsim=2000,CV_gpnumber=5,h=0.5,n
     }
     simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nEvalsim,subpop = T,desireH=desireH,mu=mu,sg=sg,n=n,desireDelta = desireDelta)
   }
-  return(list(selIndex=sort_result,simuNDCG=simuRes[[1]]))
+  return(list(selIndex=sort_result,simuNDCG=simuRes[[1]],reNDCG=simuRes[[2]]))
   doParallel::stopImplicitCluster()
 }
