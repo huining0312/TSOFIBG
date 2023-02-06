@@ -1,4 +1,4 @@
-Package: AugEITD
+Package: TSOFIBG
 Title: Training set determination for genomic selection by using bayesian optimization
 Version: 0.0.0.9000
 Authors@R: c(
