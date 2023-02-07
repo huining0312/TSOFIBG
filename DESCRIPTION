@@ -17,6 +17,8 @@ Imports:
     foreach (>= 1.5.2),
     magrittr (>= 2.0.3),
     MASS (>= 7.3-58.1),
+    reticulate,
+    rrBLUP,
     stats
 Depends: 
     R (>= 2.10)

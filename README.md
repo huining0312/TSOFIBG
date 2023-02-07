@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# AugEITD
+# TSOFIBG
 
 <!-- badges: start -->
 <!-- badges: end -->
@@ -27,13 +27,13 @@ based on collected phenotype data
 
 ## Installation
 
-The development version of AugEITD could be download from
-[GitHub](https://github.com/huining0312/AUGEITD) with:
+The development version of TSOFIBG could be download from
+[GitHub](https://github.com/huining0312/TSOFIBG) with:
 
 ``` r
 # install.packages("devtools")
 # library(devtools)
-install_github("huining0312/AUGEITD",dependencies=TRUE,force=TRUE)
+install_github("huining0312/TSOFIBG",dependencies=TRUE,force=TRUE)
 ```
 
 ## Example
@@ -50,7 +50,7 @@ and [Rice Diversity website](http://www.ricediversity.org/data/)
 respectively.
 
 ``` r
-library(AugEITD)
+#library(TSOFIBG)
 # dataset without strong population structure
 #data("geno_trop")
 #result = gen_sel_Index(kinship = geno_trop,nsim = 1000,n=nrow(geno_trop))

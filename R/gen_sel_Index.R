@@ -11,7 +11,7 @@
 #' @param num2 num1+num2=n
 #' @param kinship kinship matrix
 #' @param p_sim phenotype data for genotypes (calculate by GBLUP model)
-
+#' @noRd
 
 AugEI_fun = function(CV_gpnumber,candi,gp1,n,num1,num2,kinship,p_sim){
   EIfinal = data.frame(meanEI=rep(0,n))
