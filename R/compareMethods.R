@@ -25,7 +25,7 @@ simu_gv <- function(pheno,kin){
   return(GV_gen)
 }
 
-#' compare_met
+#' EstimationM
 #'
 #' compare bayesian RKHS (GBLUP model), RKHS, random forest and McRank
 #'
@@ -37,7 +37,7 @@ simu_gv <- function(pheno,kin){
 #' @param n the number of genotypes in the dataset
 #' @export
 #'
-compare_met <- function(kin,snp_matrix,opt_trainSet,pheno,delta=c(1/5,1/4,1/3,1/2,2/3,3/4,1),n=nrow(kin)){
+EstimationM <- function(kin,snp_matrix,opt_trainSet,pheno,delta=c(1/5,1/4,1/3,1/2,2/3,3/4,1),n=nrow(kin)){
   TRsize = round(delta*n)
   GV_gen = simu_gv(pheno,kin)
   res_gblup_rkhs = gblup_rkhs_process(opt_trainSet=sort_data_mid,GV_gen,subpopTag=T,TRsize=TRsize)

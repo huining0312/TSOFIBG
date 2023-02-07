@@ -98,7 +98,7 @@ CV_process = function(kinship,nsim,CV_gpnumber,h,n,sg,mu){
 }
 
 
-#' gen_sel_Index
+#' GenerateTS
 #'
 #' Main function.This function will generate the optimal training set for the given dataset.
 #' Users can input the desiring sample size and heritability to obtain the NDCG and relative NDCG results based on the settings and the optimal training set.
@@ -117,7 +117,7 @@ CV_process = function(kinship,nsim,CV_gpnumber,h,n,sg,mu){
 #' @param desireDelta The proportion of the candidate dataset that users would like to use as the training set.
 #' @export
 #'
-gen_sel_Index = function(kinship,nOpsim=1000,nEvalsim=2000,CV_gpnumber=5,h=0.5,n,sg=25,mu=100,subpopTag,desireH = c(0.5),desireDelta=c(1/5,1/3,2/3)){
+GenerateTS = function(kinship,nOpsim=1000,nEvalsim=2000,CV_gpnumber=5,h=0.5,n,sg=25,mu=100,subpopTag,desireH = c(0.5),desireDelta=c(1/5,1/3,2/3)){
   doParallel::registerDoParallel(cores = parallel::detectCores() - 1)
 
   sort_result = CV_process(kinship,nOpsim,CV_gpnumber,h,n,sg,mu)
