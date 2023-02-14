@@ -6,18 +6,26 @@
 #' @param gblup_result predicted genotypic values obtained from bayesian RKHS method
 #' @param rkhs_result predicted genotypic values obtained from RKHS method
 #' @param TRsize training set size
+#' @param NDCG_K the ranking user desire; default is k=1. k=5 and k=10; please input a number vector
+#' @param mean_NDCG_K please input the desired average NDCG value; default is mean_NDCG for k =10
 #' @noRd
 #'
-GBLUP_RKHS_NDCG <- function(GV_gen,gblup_result,rkhs_result,TRsize){
+GBLUP_RKHS_NDCG <- function(GV_gen,gblup_result,rkhs_result,TRsize,NDCG_K=c(1,5,10),mean_NDCG_K=c(10)){
   # --- calculate NDCG --- #
-  gblup_ndcg_res = lapply(1:(ncol(GV_gen)-1),function(x) data.frame("TRsize" = TRsize, "k1" = rep(0,length(TRsize)),
-                                                                    "k5" = rep(0,length(TRsize)),"k10" = rep(0,length(TRsize)),
-                                                                    "mean@k10" = rep(0,length(TRsize))))
+  # --- generate container --- #
 
-  rkhs_ndcg_res = lapply(1:(ncol(GV_gen)-1),function(x) data.frame("TRsize" = TRsize, "k1" = rep(0,length(TRsize)),
-                                                                   "k5" = rep(0,length(TRsize)),"k10" = rep(0,length(TRsize)),
-                                                                   "mean@k10" = rep(0,length(TRsize))))
-  names(gblup_ndcg_res) = names(rkhs_ndcg_res)= colnames(GV_gen)[-1]
+  build_df = function(TRsize,NDCG_K,mean_NDCG_K,col_name){
+    row_num = length(c(NDCG_K,mean_NDCG_K))+1
+    t = matrix(NA,nrow =row_num, ncol = length(col_name))
+    dimnames(t) = list(c("TRsize",paste("k",c(NDCG_K),sep=""),paste("mean_NDCG@k",meanK,sep = "")),c(col_name))
+    return(as.data.frame(t))
+  }
+
+  gblup_ndcg_res = lapply(1:(ncol(GV_gen)-1),function(x) build_df(TRsize,NDCG_K,mean_NDCG_K,col_name=colnames(GV_gen)[-1]))
+
+  rkhs_ndcg_res = lapply(1:(ncol(GV_gen)-1),function(x) build_df(TRsize,NDCG_K,mean_NDCG_K,col_name=colnames(GV_gen)[-1]))
+
+  #names(gblup_ndcg_res) = names(rkhs_ndcg_res)= colnames(GV_gen)[-1]
 
 
   for(i in 1:length(TRsize)){

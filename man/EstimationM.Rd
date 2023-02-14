@@ -5,7 +5,6 @@
 \title{EstimationM}
 \usage{
 EstimationM(
-  kin,
   snp_matrix,
   opt_trainSet,
   pheno,
@@ -14,8 +13,6 @@ EstimationM(
 )
 }
 \arguments{
-\item{kin}{kinship matrix}
-
 \item{snp_matrix}{the SNP marker matrix that has been organized (finishing quality control, imputation and standardized)}
 
 \item{opt_trainSet}{the number of group for the size num1}

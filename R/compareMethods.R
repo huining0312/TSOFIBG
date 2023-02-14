@@ -29,7 +29,6 @@ simu_gv <- function(pheno,kin){
 #'
 #' compare bayesian RKHS (GBLUP model), RKHS, random forest and McRank
 #'
-#' @param kin  kinship matrix
 #' @param snp_matrix the SNP marker matrix that has been organized (finishing quality control, imputation and standardized)
 #' @param opt_trainSet the number of group for the size num1
 #' @param pheno collected phenotype data; please include species ID and the column names; if data have population structure, please include subpopulations information in the dataframe
@@ -37,7 +36,9 @@ simu_gv <- function(pheno,kin){
 #' @param n the number of genotypes in the dataset
 #' @export
 #'
-EstimationM <- function(kin,snp_matrix,opt_trainSet,pheno,delta=c(1/5,1/4,1/3,1/2,2/3,3/4,1),n=nrow(kin)){
+EstimationM <- function(snp_matrix,opt_trainSet,pheno,delta=c(1/5,1/4,1/3,1/2,2/3,3/4,1),n=nrow(kin)){
+  kin = (as.matrix(snp_matrix)%*%t(as.matrix(snp_matrix)))/ncol(as.matrix(snp_matrix))
+
   TRsize = round(delta*n)
   GV_gen = simu_gv(pheno,kin)
   res_gblup_rkhs = gblup_rkhs_process(opt_trainSet=sort_data_mid,GV_gen,subpopTag=T,TRsize=TRsize)
@@ -54,12 +55,7 @@ EstimationM <- function(kin,snp_matrix,opt_trainSet,pheno,delta=c(1/5,1/4,1/3,1/
   sklearn <- NULL
   pd <- reticulate::import("pandas")
   sklearn <- reticulate::import("sklearn")
-  #.onload <- function(libname, pkgname) {
-  #  # use superassignment to update global reference to pandas
-  #  pd <<- reticulate::import("pandas", delay_load = TRUE)
-  #  sklearn <<- reticulate::import("scikit-learn", delay_load = TRUE)
-  #  os <<- reticulate::import("os", delay_load = TRUE)
-  #}
+
   RF <- sklearn$ensemble$RandomForestRegressor
   RFC <- sklearn$ensemble$RandomForestClassifier
   reticulate::py_run_file(system.file("python", "McRank.py", package = "TSOFIBG"))
