@@ -9,7 +9,8 @@ EstimationM(
   opt_trainSet,
   pheno,
   delta = c(1/5, 1/4, 1/3, 1/2, 2/3, 3/4, 1),
-  n = nrow(kin)
+  n = nrow(kin),
+  k = c(1, 5, 10)
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ EstimationM(
 \item{delta}{training set size = delta *n; default:1/5,1/4,1/3,1/2,2/3,3/4,1}
 
 \item{n}{the number of genotypes in the dataset}
+
+\item{k}{the first k individuals (after sorting)}
 }
 \description{
 compare bayesian RKHS (GBLUP model), RKHS, random forest and McRank
