@@ -2,6 +2,7 @@
 #'
 #' Function generate genotypic value by using bayesian RKHS (GBLUP model) and RKHS
 #'
+#' @param kin kinship matrix
 #' @param opt_trainSet optimal training set
 #' @param GV_gen genotypic value estimated by collected phenotype data (estimate based on GBLUP model); please add species ID at the first column
 #' @param TRsize training set size
@@ -9,21 +10,23 @@
 #' @param trait_num the number of traits
 #' @noRd
 
-gblup_rkhs_process <- function(opt_trainSet,GV_gen,TRsize,subpopTag,trait_num){
+gblup_rkhs_process <- function(kin,opt_trainSet,GV_gen,TRsize,subpopTag,trait_num){
 
-  gpName = names(table(opt_trainSet$tag))
-  for(i in gpName){
-    nam <- paste(i)
-    assign(nam, opt_trainSet%>%filter(tag==i)%>%.$name)
+  if(subpopTag){
+    gpName = names(table(opt_trainSet$tag))
+    for(i in gpName){
+      nam <- paste(i)
+      assign(nam, opt_trainSet%>%filter(tag==i)%>%.$name)
+    }
+    subgpNum = c()
+    for(i in 1:length(gpName)){
+      subgpNum = c(subgpNum,length(get(gpName[i])))
+    }
+    # proportion
+    ratio_pp = subgpNum/sum(subgpNum)
+
   }
-  subgpNum = c()
-  for(i in 1:length(gpName)){
-    subgpNum = c(subgpNum,length(get(gpName[i])))
-  }
-  # proportion
-  ratio_pp = subgpNum/sum(subgpNum)
   pickList = list()
-
   TRsize = round(delta*n)
 
   if(missing(trait_num)){
@@ -47,6 +50,7 @@ gblup_rkhs_process <- function(opt_trainSet,GV_gen,TRsize,subpopTag,trait_num){
       cat(paste(size),sep = "\n")
       if(!subpopTag){
         pick_pp = opt_trainSet$name[1:size]
+        pickList[[s]] = pick_pp
       }else{
         #gblup model
         PPpickNum = floor(ratio_pp*size)

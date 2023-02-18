@@ -9,8 +9,9 @@ EstimationM(
   opt_trainSet,
   pheno,
   delta = c(1/5, 1/4, 1/3, 1/2, 2/3, 3/4, 1),
-  n = nrow(kin),
-  k = c(1, 5, 10)
+  n = nrow(opt_trainSet),
+  k = c(1, 5, 10),
+  subpopTag = F
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ EstimationM(
 \item{n}{the number of genotypes in the dataset}
 
 \item{k}{the first k individuals (after sorting)}
+
+\item{subpopTag}{Boolean value; Does dataset has population structure?}
 }
 \description{
 compare bayesian RKHS (GBLUP model), RKHS, random forest and McRank

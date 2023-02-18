@@ -2,7 +2,7 @@
 #'
 #' estimate genotypic value from collected phenotype data; the generating genotypic value will be treated as true phenotype data at the following steps
 #'
-#' @param pheno collected phenotype data; please include species ID and the column names
+#' @param pheno collected phenotype data; please include species ID and the column names. Species ID should be named "ID"
 #' @param kin kinship matrix
 #' @noRd
 #'
@@ -52,7 +52,7 @@ gen_table = function(gblup_res, rkhs_res, rf_Res, mcrank_res, k){
     for(size in 1:ncol(gblup_t)){
 
       gblup_sort = gblup_t[order(gblup_t[,size], decreasing = T),size]
-      names(gblup_sort) = substring(names(gblup_sort),2)
+      #names(gblup_sort) = substring(names(gblup_sort),2)
       gblup_sort_df = data.frame(gblup_sort)
       gblup_sort_df$score = 1:nrow(gblup_sort_df)
 
@@ -100,14 +100,16 @@ gen_table = function(gblup_res, rkhs_res, rf_Res, mcrank_res, k){
 #' @param delta training set size = delta *n; default:1/5,1/4,1/3,1/2,2/3,3/4,1
 #' @param n the number of genotypes in the dataset
 #' @param k the first k individuals (after sorting)
+#' @param subpopTag Boolean value; Does dataset has population structure?
 #' @export
 #'
-EstimationM <- function(snp_matrix,opt_trainSet,pheno,delta=c(1/5,1/4,1/3,1/2,2/3,3/4,1),n=nrow(kin),k=c(1,5,10)){
-  kin = (as.matrix(snp_matrix)%*%t(as.matrix(snp_matrix)))/ncol(as.matrix(snp_matrix))
+EstimationM <- function(snp_matrix,opt_trainSet,pheno,delta=c(1/5,1/4,1/3,1/2,2/3,3/4,1),n=nrow(opt_trainSet),k=c(1,5,10),subpopTag=F){
+
+  kin = as.matrix(snp_matrix)%*%t(as.matrix(snp_matrix))/ncol(as.matrix(snp_matrix))
 
   TRsize = round(delta*n)
   GV_gen = simu_gv(pheno,kin)
-  res_gblup_rkhs = gblup_rkhs_process(opt_trainSet=sort_data_mid,GV_gen,subpopTag=T,TRsize=TRsize)
+  res_gblup_rkhs = gblup_rkhs_process(kin,opt_trainSet=opt_trainSet,GV_gen,subpopTag=subpopTag,TRsize=TRsize)
   gblup_result = res_gblup_rkhs[[1]]
   rkhs_result = res_gblup_rkhs[[2]]
   picklist = res_gblup_rkhs[[3]]
@@ -128,13 +130,12 @@ EstimationM <- function(snp_matrix,opt_trainSet,pheno,delta=c(1/5,1/4,1/3,1/2,2/
   # return a list
   reticulate::py_run_file(system.file("python", "mainFunRF.py", package = "TSOFIBG"))
   reticulate::py_run_file(system.file("python", "mainFunMcRank.py", package = "TSOFIBG"))
-  randomforest_res <- reticulate::py$main_fun_RF(snp_matrix_up,TRsize,GV_gen,picklist,RF)
-  mcrank_res <- reticulate::py$main_fun_Mcrank(snp_matrix_up,TRsize,GV_gen,picklist,RFC)
+  randomforest_res <- reticulate::py$main_fun_RF(snp_matrix,TRsize,GV_gen,picklist,RF)
+  mcrank_res <- reticulate::py$main_fun_Mcrank(snp_matrix,TRsize,GV_gen,picklist,RFC)
 
   # display table
-  #final_res = gen_table(gblup_result, rkhs_result, randomforest_res, mcrank_res, k)
+  final_res = gen_table(gblup_result, rkhs_result, randomforest_res, mcrank_res, k)
 
-  #return(final_res)
-  return(list("gblup"=gblup_result,"rkhs"=rkhs_result,"rf"=randomforest_res,"mcrank"=mcrank_res))
-  #return(list("GBLUP_NDCG"=res_ndcg[[1]],"RKHS_NDCG"=res_ndcg[[2]],"RF"=randomforest_res,"McRank"=mcrank_res))
+  return(final_res)
+  #return(list("gblup"=gblup_result,"rkhs"=rkhs_result,"rf"=randomforest_res,"mcrank"=mcrank_res))
 }
