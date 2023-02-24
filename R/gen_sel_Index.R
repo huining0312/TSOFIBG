@@ -92,7 +92,7 @@ CV_process = function(kinship,nsim,CV_gpnumber,h,n,sg,mu){
   rank = order(final_dat[,1], decreasing = T)
   sort_result = data.frame(aug.EI=final_dat[rank,],speciesName=rownames(final_dat)[rank],posIndex=rep(0,n))
   for(i in 1:nrow(sort_result)){
-    sort_result[sort_result[,1]==rownames(kinship)[i],3] = i
+    sort_result[sort_result[,2]==rownames(kinship)[i],3] = i
   }
   return(sort_result)
 }
@@ -128,7 +128,7 @@ GenerateTS = function(kinship,nOpsim=1000,nEvalsim=2000,CV_gpnumber=5,h=0.5,n,sg
     cat(paste("evaluate step processing..."),sep = "\n")
     sort_result$tag = rep(NA,n)
     for(i in 1:n){
-      sort_result[i,4] <- as.character(subpopTag[subpopTag[,1] == sort_result[i,1],2])
+      sort_result[i,4] <- as.character(subpopTag[subpopTag[,1] == sort_result[i,2],2])
     }
     simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nEvalsim,subpop = T,desireH=desireH,mu=mu,sg=sg,n=n,desireDelta = desireDelta)
   }
