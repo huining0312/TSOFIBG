@@ -90,7 +90,7 @@ CV_process = function(kinship,nsim,CV_gpnumber,h,n,sg,mu){
 
   final_dat = data.frame(augEI=apply(result, 1, mean))
   rank = order(final_dat[,1], decreasing = T)
-  sort_result = data.frame(aug.EI=final_dat[rank,],speciesName=rownames(final_dat)[rank],posIndex=rep(0,n))
+  sort_result = data.frame(aug.EI=final_dat[rank,],name=rownames(final_dat)[rank],posIndex=rep(0,n))
   for(i in 1:nrow(sort_result)){
     sort_result[sort_result[,2]==rownames(kinship)[i],3] = i
   }

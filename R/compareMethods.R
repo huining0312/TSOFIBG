@@ -106,7 +106,7 @@ gen_table = function(gblup_res, rkhs_res, rf_Res, mcrank_res, k){
 EstimationM <- function(snp_matrix,opt_trainSet,pheno,delta=c(1/5,1/4,1/3,1/2,2/3,3/4,1),n=nrow(opt_trainSet),k=c(1,5,10),subpopTag=F){
 
   kin = as.matrix(snp_matrix)%*%t(as.matrix(snp_matrix))/ncol(as.matrix(snp_matrix))
-
+  opt_trainSet = opt_trainSet[,-3]
   TRsize = round(delta*n)
   GV_gen = simu_gv(pheno,kin)
   res_gblup_rkhs = gblup_rkhs_process(kin,opt_trainSet=opt_trainSet,GV_gen,subpopTag=subpopTag,TRsize=TRsize)
