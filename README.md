@@ -62,7 +62,9 @@ respectively.
 ``` r
 #library(TSOFIBG)
 # dataset without strong population structure
-#data("geno_trop")
+# data("geno_trop")
+# kinship = geno_trop
+# n = nrow(kinship)
 #result = GenerateTS(kinship,nOpsim=1000,nEvalsim=2000,CV_gpnumber=5,h=0.5,n,sg=25,mu=100,desireH = c(0.5),desireDelta=c(1/5,1/3,2/3))
 
 # dataset with strong population structure
