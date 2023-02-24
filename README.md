@@ -6,24 +6,34 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-This package provides users a function to determine a training set for
-genomic selection. The aim for this training set is to train the GBLUP
-model finding the best genotype from large candidate set. Augmented EI
-presented by [Tsai et
+This package provides users two functions.
+
+GenerateTS( ) determine a training set for genomic selection. The aim
+for this training set is to train the GBLUP model to find the best
+genotype from large candidate set.
+
+EstimationM( ) return the first k individuals at different training set
+size. The result is the average of the ranking generated from different
+methods.
+
+Augmented EI presented by [Tsai et
 al.(2021)](https://doi.org/10.1007/s13253-021-00454-2) is used as the
-criteria and NDCG (Normalized dicounted cumulated gain, Blondel et
-al.(2015)) is used as the index of evaluating model prediction accuracy
-in this package.
+criteria and NDCG (Normalized dicounted cumulated gain, Blondel et al,
+2015) is used as the index of evaluating model prediction accuracy in
+this package.
 
-For more details of methods in this package, please check the
-\[article\].
+For more details of methods in this package, please check the article.
 
-Users will obtain : 1. the selection index of genotypes which indicates
-to the priority order of genotypes being selected as a training set. The
-ranking is based on the augmented EI value of each genotype. 2. the
-evaluation result of the optimal training set 3. the relative efficiency
-of the optimal training set at different sizes to the whole dataset
-based on collected phenotype data
+Users will obtain three results from GenerateTS( ): 1. the selection
+index of genotypes which indicates to the priority order of genotypes
+being selected as a training set. The ranking is based on the augmented
+EI value of each genotype. 2. the evaluation result of the optimal
+training set 3. the relative efficiency of the optimal training set at
+different sizes to the whole dataset based on collected phenotype data
+
+Users will obtain one result from EstimateM( ): 1. the first k
+individuals of the individuals predicted by four methods. the length of
+list depends on user’s setting of the training set size and k
 
 ## Installation
 
@@ -53,12 +63,12 @@ respectively.
 #library(TSOFIBG)
 # dataset without strong population structure
 #data("geno_trop")
-#result = gen_sel_Index(kinship = geno_trop,nsim = 1000,n=nrow(geno_trop))
+#result = GenerateTS(kinship,nOpsim=1000,nEvalsim=2000,CV_gpnumber=5,h=0.5,n,sg=25,mu=100,desireH = c(0.5),desireDelta=c(1/5,1/3,2/3))
 
 # dataset with strong population structure
 #data("geno_rice44K")
 #data("subpop_tag")
-#result = gen_sel_Index(kinship = geno_rice44K,nsim = 1000,n=nrow(geno_rice44K),subpopTag = subpop_tag)
+#result = GenerateTS(kinship,nOpsim=1000,nEvalsim=2000,CV_gpnumber=5,h=0.5,n,sg=25,mu=100,subpopTag=subpop_tag,desireH = c(0.5),desireDelta=c(1/5,1/3,2/3))
 ```
 
 ## Authors
