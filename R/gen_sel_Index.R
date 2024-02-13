@@ -117,21 +117,25 @@ CV_process = function(kinship,nsim,CV_gpnumber,h,n,sg,mu){
 #' @param desireDelta The proportion of the candidate dataset that users would like to use as the training set.
 #' @export
 #'
-GenerateTS = function(kinship,nOpsim=1000,nEvalsim=2000,CV_gpnumber=5,h=0.5,n,sg=25,mu=100,subpopTag,desireH = c(0.5),desireDelta=c(1/5,1/3,2/3)){
+GenerateTS = function(kinship,nOpsim=1000,nEvalsim=2000,CV_gpnumber=5,h=0.5,n,sg=25,mu=100,subpopTag,desireH = c(0.5),desireDelta=c(1/5,1/3,2/3), tmp_var=T){
   doParallel::registerDoParallel(cores = parallel::detectCores() - 1)
-
   sort_result = CV_process(kinship,nOpsim,CV_gpnumber,h,n,sg,mu)
-
-  if(missing(subpopTag)){
-    simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nEvalsim,subpop = F,desireH=desireH,mu=mu,sg=sg,desireDelta=desireDelta,n=n)
+  if (tmp_var){
+    return(list(selIndex=sort_result))
   }else{
-    cat(paste("evaluate step processing..."),sep = "\n")
-    sort_result$tag = rep(NA,n)
-    for(i in 1:n){
-      sort_result[i,4] <- as.character(subpopTag[subpopTag[,1] == sort_result[i,2],2])
+    if(missing(subpopTag)){
+      simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nEvalsim,subpop = F,desireH=desireH,mu=mu,sg=sg,desireDelta=desireDelta,n=n)
+    }else{
+      cat(paste("evaluate step processing..."),sep = "\n")
+      sort_result$tag = rep(NA,n)
+      for(i in 1:n){
+        sort_result[i,4] <- as.character(subpopTag[subpopTag[,1] == sort_result[i,2],2])
+      }
+      simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nEvalsim,subpop = T,desireH=desireH,mu=mu,sg=sg,n=n,desireDelta = desireDelta)
     }
-    simuRes = evalsteps(optimal_trainSet=sort_result,kinship=kinship,nsim=nEvalsim,subpop = T,desireH=desireH,mu=mu,sg=sg,n=n,desireDelta = desireDelta)
+    return(list(selIndex=sort_result,simuNDCG=simuRes[[1]],reNDCG=simuRes[[2]]))
   }
-  return(list(selIndex=sort_result,simuNDCG=simuRes[[1]],reNDCG=simuRes[[2]]))
   doParallel::stopImplicitCluster()
 }
+
+

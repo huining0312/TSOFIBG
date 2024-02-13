@@ -59,6 +59,7 @@ paral_trainSetSize <- function(kinship,optimal_trainSet,subpop,trainSize,p_true,
   ndcg_mean = mean_NDCGk(g_bp,g_true,10,sort_g_true)
 
   NDCGVals = c(ndcg_1,ndcg_5,ndcg_10,ndcg_mean)
+
   return(NDCGVals)
 }
 
